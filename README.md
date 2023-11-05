@@ -1,4 +1,6 @@
-# JayTalk
+<img src="./logo.png" style="float: right; width: 90px">
+
+<h1 style="border: none">Jaywalk</h1>
 
 A sleek and engaging language that transpiles to JavaScript, crafted with TypeScript atop Bun.js.
 

@@ -5,20 +5,12 @@ import {
     isParenthesis,
     isQuote,
 } from './identify'
+import { Token } from './types'
 
-export type Token =
-    | {
-          type: 'Parenthesis'
-          value: string
-      }
-    | {
-          type: 'Number'
-          value: number
-      }
-    | {
-          type: 'Name'
-          value: string
-      }
+export const NUMBER = 'Number'
+export const PARENTHESIS = 'Parenthesis'
+export const STRING = 'String'
+export const NAME = 'Name'
 
 export const tokenize = (input: string) => {
     const tokens: Token[] = []
@@ -29,7 +21,7 @@ export const tokenize = (input: string) => {
 
         if (isParenthesis(char)) {
             tokens.push({
-                type: 'Parenthesis',
+                type: PARENTHESIS,
                 value: char,
             })
             cursor++
@@ -49,18 +41,40 @@ export const tokenize = (input: string) => {
             }
 
             tokens.push({
-                type: 'Number',
+                type: NUMBER,
                 value: parseInt(strNumber, 10),
             })
-
             continue
         }
 
         if (isLetter(char)) {
+            let symbol = char
+
+            while (isLetter(input[++cursor])) {
+                symbol += input[cursor]
+            }
+
             tokens.push({
-                type: 'Name',
-                value: char,
+                type: NAME,
+                value: symbol,
             })
+            continue
+        }
+
+        if (isQuote(char)) {
+            let str = ''
+
+            while (!isQuote(input[++cursor])) {
+                str += input[cursor]
+            }
+
+            tokens.push({
+                type: STRING,
+                value: str,
+            })
+
+            /* now, input[cursor] is the closing quote,
+            so bump the cursor to the next character */
             cursor++
             continue
         }

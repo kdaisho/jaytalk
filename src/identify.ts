@@ -11,9 +11,15 @@ export const isNumber = (char: string) => NUMBER.test(char)
 
 export const isOperator = (char: string) => OPERATORS.includes(char)
 
-export const isOpeningParenthesis = (char: string) => char === '('
+export const isOpeningParenthesis = (char: string | number) => {
+    if (typeof char === 'number') return false
+    return char === '('
+}
 
-export const isClosingParenthesis = (char: string) => char === ')'
+export const isClosingParenthesis = (char: string | number) => {
+    if (typeof char === 'number') return false
+    return char === ')'
+}
 
 export const isParenthesis = (char: string) =>
     isOpeningParenthesis(char) || isClosingParenthesis(char)
