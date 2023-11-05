@@ -1,7 +1,12 @@
 import { isOpeningParenthesis, isClosingParenthesis } from './identify'
 import { NAME, NUMBER, STRING } from './tokenize'
-import { Token, ASTNodeType } from './types'
+import { Token } from './types'
 import { peek, pop } from './utils'
+
+export const NUMERIC_LITERAL = 'NumericLiteral'
+export const STRING_LITERAL = 'StringLiteral'
+export const IDENTIFIER = 'Identifier'
+export const CALL_EXPRESSION = 'CallExpression'
 
 const parenthesize = (tokens: Token[]): unknown => {
     const token = pop(tokens)
@@ -25,7 +30,7 @@ const parse = (tokens: unknown): Record<string, unknown> => {
         const [first, ...rest] = tokens
 
         return {
-            type: 'CallExpression',
+            type: CALL_EXPRESSION,
             name: first.value,
             arguments: rest.map(parse),
         }
@@ -37,21 +42,21 @@ const parse = (tokens: unknown): Record<string, unknown> => {
 
     if (token.type === NUMBER) {
         return {
-            type: ASTNodeType.NumericLiteral,
+            type: NUMERIC_LITERAL,
             value: token.value,
         }
     }
 
     if (token.type === STRING) {
         return {
-            type: ASTNodeType.StringLiteral,
+            type: STRING_LITERAL,
             value: token.value,
         }
     }
 
     if (token.type === NAME) {
         return {
-            type: ASTNodeType.Identifier,
+            type: IDENTIFIER,
             name: token.value,
         }
     }

@@ -1,26 +1,30 @@
 import { describe, expect, it } from 'bun:test'
-import parse from '../src/parse'
-import { Token, ASTNodeType } from '../src/types'
+import parse, {
+    IDENTIFIER,
+    NUMERIC_LITERAL,
+    STRING_LITERAL,
+} from '../src/parse'
+import { Token } from '../src/types'
 import { NAME, NUMBER, PARENTHESIS, STRING } from '../src/tokenize'
 
 describe('parse', () => {
     it('should return a token with the type of NumericLiteral for number tokens', () => {
         const tokens: Token[] = [{ type: NUMBER, value: 1 }]
-        const ast = { type: ASTNodeType.NumericLiteral, value: 1 }
+        const ast = { type: NUMERIC_LITERAL, value: 1 }
 
         expect(parse(tokens)).toEqual(ast)
     })
 
     it('should return a token with the type of StringLiteral for string tokens', () => {
         const tokens: Token[] = [{ type: STRING, value: 'hello' }]
-        const ast = { type: ASTNodeType.StringLiteral, value: 'hello' }
+        const ast = { type: STRING_LITERAL, value: 'hello' }
 
         expect(parse(tokens)).toEqual(ast)
     })
 
     it('should return a token with the type of Identifier for name tokens', () => {
         const tokens: Token[] = [{ type: NAME, value: 'x' }]
-        const ast = { type: ASTNodeType.Identifier, name: 'x' }
+        const ast = { type: IDENTIFIER, name: 'x' }
 
         expect(parse(tokens)).toEqual(ast)
     })
@@ -38,8 +42,8 @@ describe('parse', () => {
             type: 'CallExpression',
             name: 'add',
             arguments: [
-                { type: ASTNodeType.NumericLiteral, value: 2 },
-                { type: ASTNodeType.NumericLiteral, value: 3 },
+                { type: NUMERIC_LITERAL, value: 2 },
+                { type: NUMERIC_LITERAL, value: 3 },
             ],
         }
 
