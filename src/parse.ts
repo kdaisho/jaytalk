@@ -11,10 +11,10 @@ export const CALL_EXPRESSION = 'CallExpression'
 const parenthesize = (tokens: Token[]): unknown => {
     const token = pop(tokens)
 
-    if (token && !Array.isArray(token) && isOpeningParenthesis(token.value)) {
+    if (token && isOpeningParenthesis(token.value)) {
         const expression = []
 
-        while (!isClosingParenthesis(peek(tokens as Token[]).value)) {
+        while (!isClosingParenthesis(peek(tokens).value)) {
             expression.push(parenthesize(tokens))
         }
         pop(tokens)
@@ -25,9 +25,9 @@ const parenthesize = (tokens: Token[]): unknown => {
     return token
 }
 
-const parse = (tokens: unknown): Record<string, unknown> => {
-    if (Array.isArray(tokens) && tokens.length) {
-        const [first, ...rest] = tokens
+const parse = (tokenOrTokens: unknown): Record<string, unknown> => {
+    if (Array.isArray(tokenOrTokens) && tokenOrTokens.length) {
+        const [first, ...rest] = tokenOrTokens
 
         return {
             type: CALL_EXPRESSION,
@@ -36,9 +36,7 @@ const parse = (tokens: unknown): Record<string, unknown> => {
         }
     }
 
-    const token = tokens as Token
-
-    if (Array.isArray(token)) return token[0]
+    const token = tokenOrTokens as Token
 
     if (token.type === NUMBER) {
         return {
@@ -61,7 +59,7 @@ const parse = (tokens: unknown): Record<string, unknown> => {
         }
     }
 
-    return token
+    throw new Error(`${token} is not defined`)
 }
 
 export default function (tokens: Token[]) {

@@ -65,6 +65,7 @@ describe('parse', () => {
             { type: PARENTHESIS, value: ')' },
             { type: PARENTHESIS, value: ')' },
         ]
+        // (add 2 3 (subtract 4 2))
 
         const ast = {
             type: 'CallExpression',
