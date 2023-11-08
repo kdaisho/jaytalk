@@ -9,7 +9,7 @@ const apply = (node: CallExpression): number | void => {
     const args = node.arguments.map(evaluate)
 
     if (typeof fn !== 'function') {
-        throw new TypeError(`${node.name} is not a function`)
+        throw new TypeError(`🔥${node.name} is not a function🔥`)
     }
 
     return fn(...args)
@@ -20,7 +20,7 @@ const getIdentifier = (node: {
     name: StandardLibrary
 }) => {
     if (Moth[node.name]) return Moth[node.name]
-    throw new ReferenceError(`${node.name} is not defined`)
+    throw new ReferenceError(`🔥${node.name} is not defined🔥`)
 }
 
 const evaluate = (node: any) => {

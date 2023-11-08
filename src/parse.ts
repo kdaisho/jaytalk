@@ -59,7 +59,7 @@ const parse = (tokenOrTokens: unknown): Record<string, unknown> => {
         }
     }
 
-    throw new Error(`${token} is not defined`)
+    throw new Error(`🔥${token} is not defined🔥`)
 }
 
 export default function (tokens: Token[]) {

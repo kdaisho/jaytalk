@@ -1,7 +1,10 @@
-const all =
-    (fn: (a: number, b: number) => number) =>
-    (...list: number[]) =>
-        list.reduce(fn)
+type Calculator = (a: number, b: number) => number
+
+const all = (fn: Calculator) => {
+    return (...list: number[]) => {
+        return list.reduce(fn)
+    }
+}
 
 const add = all((a: number, b: number) => a + b)
 const subtract = all((a: number, b: number) => a - b)
