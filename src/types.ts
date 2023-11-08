@@ -9,8 +9,17 @@ export type StringToken = {
 
 export type Token = NumericToken | StringToken
 
+export type StandardLibrary =
+    | 'add'
+    | 'subtract'
+    | 'multiply'
+    | 'divide'
+    | 'modulo'
+    | 'log'
+    | 'pi'
+
 export type CallExpression = {
     type: typeof CALL_EXPRESSION
-    name: 'add' | 'subtract' | 'multiply' | 'divide' | 'modulo'
+    name: StandardLibrary
     arguments: Token[]
 }

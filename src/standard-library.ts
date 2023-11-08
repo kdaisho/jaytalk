@@ -8,6 +8,8 @@ const subtract = all((a: number, b: number) => a - b)
 const multiply = all((a: number, b: number) => a * b)
 const divide = all((a: number, b: number) => a / b)
 const modulo = all((a: number, b: number) => a % b)
+const max = all((a: number, b: number) => Math.max(...[a, b]))
+const min = all((a: number, b: number) => Math.min(...[a, b]))
 const log = console.log
 
 export default {
@@ -16,6 +18,8 @@ export default {
     multiply,
     divide,
     modulo,
+    max,
+    min,
     log,
     pi: Math.PI,
 }
