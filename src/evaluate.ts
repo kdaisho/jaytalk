@@ -26,7 +26,7 @@ const getIdentifier = (node: {
 const evaluate = (node: any) => {
     if (node.type === CALL_EXPRESSION) return apply(node)
     if (node.type === IDENTIFIER) return getIdentifier(node)
-    if (node.value) return node.value
+    if (typeof node.value !== 'undefined') return node.value
 }
 
 export default evaluate
