@@ -1,10 +1,11 @@
 import inquirer from 'inquirer'
 import chalk from 'chalk'
 import { parseAndEvaluate } from './parse-and-evaluate'
+import { fileURLToPath } from 'bun'
 
 const COMMAND = 'COMMAND'
 
-const askQuestions = () => {
+async function askQuestions() {
     const questions = [
         {
             name: COMMAND,
@@ -16,7 +17,16 @@ const askQuestions = () => {
     return inquirer.prompt(questions)
 }
 
-const repl = async () => {
+const filePath = fileURLToPath(import.meta.url as unknown as URL)
+
+if (process.argv[1] === filePath) {
+    console.log(
+        chalk.greenBright('🔥 Welcome to the Moth programming language! 🔥')
+    )
+    repl()
+}
+
+async function repl() {
     try {
         const { COMMAND } = await askQuestions()
 
@@ -26,6 +36,7 @@ const repl = async () => {
     } catch (err) {
         console.error(`🔥${err}🔥`)
     }
+    repl()
 }
 
-repl()
+export default repl
