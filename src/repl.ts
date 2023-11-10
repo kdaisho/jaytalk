@@ -1,7 +1,6 @@
 import inquirer from 'inquirer'
 import chalk from 'chalk'
 import { parseAndEvaluate } from './parse-and-evaluate'
-import { fileURLToPath } from 'bun'
 
 const COMMAND = 'COMMAND'
 
@@ -17,9 +16,7 @@ async function askQuestions() {
     return inquirer.prompt(questions)
 }
 
-const filePath = fileURLToPath(import.meta.url as unknown as URL)
-
-if (process.argv[1] === filePath) {
+if (process.argv[1] === import.meta.path) {
     console.log(
         chalk.greenBright('🔥 Welcome to the Moth programming language! 🔥')
     )
