@@ -1,17 +1,27 @@
-import { CallExpressionVisitor, NumericLiteralVisitor } from './types'
+import {
+    CallExpression,
+    CallExpressionVisitor,
+    NumericLiteral,
+    NumericLiteralVisitor,
+} from './types'
 
 function traverseArray({
     array,
     parent,
     visitor,
 }: {
-    array: Record<string, any>
-    parent?: Record<string, any>
+    array: (CallExpression | NumericLiteral)[]
+    parent?: { type: string; arguments?: (CallExpression | NumericLiteral)[] }
     visitor: CallExpressionVisitor | NumericLiteralVisitor
 }) {
-    array.forEach((node: Record<string, any>) => {
-        traverseNode({ node, parent, visitor })
-    })
+    array.forEach(
+        (node: {
+            type: string
+            arguments?: (CallExpression | NumericLiteral)[]
+        }) => {
+            traverseNode({ node, parent, visitor })
+        }
+    )
 }
 
 function traverseNode({
@@ -19,8 +29,8 @@ function traverseNode({
     parent,
     visitor,
 }: {
-    node: Record<string, any>
-    parent?: Record<string, any>
+    node: { type: string; arguments?: (CallExpression | NumericLiteral)[] }
+    parent?: { type: string; arguments?: (CallExpression | NumericLiteral)[] }
     visitor: CallExpressionVisitor | NumericLiteralVisitor
 }) {
     const methods = visitor[node.type as keyof typeof visitor] as {
@@ -28,15 +38,27 @@ function traverseNode({
             node,
             parent,
         }: {
-            node: Record<string, unknown>
-            parent?: Record<string, unknown>
+            node: {
+                type: string
+                arguments?: (CallExpression | NumericLiteral)[]
+            }
+            parent?: {
+                type: string
+                arguments?: (CallExpression | NumericLiteral)[]
+            }
         }) => void
         exit?: ({
             node,
             parent,
         }: {
-            node: Record<string, unknown>
-            parent?: Record<string, unknown>
+            node: {
+                type: string
+                arguments?: (CallExpression | NumericLiteral)[]
+            }
+            parent?: {
+                type: string
+                arguments?: (CallExpression | NumericLiteral)[]
+            }
         }) => void
     }
 
@@ -54,7 +76,7 @@ function traverseNode({
 }
 
 export default (
-    node: { type: string; arguments?: Record<string, any>[] },
+    node: { type: string; arguments?: (CallExpression | NumericLiteral)[] },
     visitor: CallExpressionVisitor | NumericLiteralVisitor
 ) => {
     traverseNode({ node, visitor })

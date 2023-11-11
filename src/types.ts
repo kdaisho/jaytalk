@@ -1,4 +1,9 @@
-import { CALL_EXPRESSION, NUMERIC_LITERAL, STRING_LITERAL } from './parse'
+import {
+    CALL_EXPRESSION,
+    IDENTIFIER,
+    NUMERIC_LITERAL,
+    STRING_LITERAL,
+} from './parse'
 import { NUMBER, PARENTHESIS, STRING, NAME } from './tokenize'
 
 export type NumericToken = { type: typeof NUMBER; value: number }
@@ -18,10 +23,10 @@ export type StandardLibrary =
     | 'log'
     | 'pi'
 
-export type CallExpression = {
+export type CallExpression<T = NumericLiteral> = {
     type: typeof CALL_EXPRESSION
-    name: string
-    arguments: NumericLiteral[]
+    name: StandardLibrary
+    arguments: T[]
 }
 
 export type NumericLiteral = {
@@ -32,6 +37,11 @@ export type NumericLiteral = {
 export type StringLiteral = {
     type: typeof STRING_LITERAL
     value: string
+}
+
+export type Identifier = {
+    type: typeof IDENTIFIER
+    name: StandardLibrary
 }
 
 export type Visitor = {
@@ -71,7 +81,7 @@ export type NumericLiteralVisitor = {
             node,
             parent,
         }: {
-            node: CallExpression
+            node: NumericLiteral
             parent?: Record<string, unknown>
         }) => void
     }

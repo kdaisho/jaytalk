@@ -1,15 +1,20 @@
 import evaluate from '../src/evaluate'
 import { NUMERIC_LITERAL, STRING_LITERAL } from '../src/parse'
-import { CallExpression } from '../src/types'
+import {
+    CallExpression,
+    Identifier,
+    NumericLiteral,
+    StringLiteral,
+} from '../src/types'
 
 describe('evaluate', () => {
     it('should fall back to returning a primitive numeric value', () => {
-        const ast = { type: NUMERIC_LITERAL, value: 2 }
+        const ast: NumericLiteral = { type: NUMERIC_LITERAL, value: 2 }
         expect(evaluate(ast)).toBe(2)
     })
 
     it('should fall back to returning a primitive string value', () => {
-        const ast = { type: STRING_LITERAL, value: 'hello' }
+        const ast: StringLiteral = { type: STRING_LITERAL, value: 'hello' }
         expect(evaluate(ast)).toBe('hello')
     })
 
@@ -28,7 +33,7 @@ describe('evaluate', () => {
     })
 
     it('should be able to evaluate a nested expression', () => {
-        const ast = {
+        const ast: CallExpression = {
             type: 'CallExpression',
             name: 'add',
             arguments: [
@@ -50,12 +55,12 @@ describe('evaluate', () => {
     })
 
     it('should be able to lookup identifiers in the environment', () => {
-        const ast = { type: 'Identifier', name: 'pi' }
+        const ast: Identifier = { type: 'Identifier', name: 'pi' }
         expect(evaluate(ast)).toBe(Math.PI)
     })
 
     it('should be able to determine the highest number in a range', () => {
-        const ast = {
+        const ast: CallExpression = {
             type: 'CallExpression',
             name: 'max',
             arguments: [
@@ -69,7 +74,7 @@ describe('evaluate', () => {
     })
 
     it('should be able to determine the lowest number in a range', () => {
-        const ast = {
+        const ast: CallExpression = {
             type: 'CallExpression',
             name: 'min',
             arguments: [
