@@ -1,5 +1,6 @@
 declare global {
-    var describe: (description: string, tests: () => void) => void
-    var expect: (value: any) => any
-    var it: (description: string, tests: () => void) => void
+    const describe: (description: string, tests: () => void) => void
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const expect: (value: any) => any
+    const it: (description: string, tests: () => void) => void
 }

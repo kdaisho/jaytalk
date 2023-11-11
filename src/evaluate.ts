@@ -1,8 +1,8 @@
 import { CALL_EXPRESSION, IDENTIFIER } from './parse'
 import Moth from './standard-library'
-import { CallExpression, StandardLibrary } from './types'
+import { CallExpression, StandardLibrary, Token } from './types'
 
-const last = (collection: any[]) => collection.at(-1)
+// const last = (collection: any[]) => collection.at(-1)
 
 const apply = (node: CallExpression): number | void => {
     const fn = Moth[node.name]
@@ -23,7 +23,12 @@ const getIdentifier = (node: {
     throw new ReferenceError(`🔥${node.name} is not defined🔥`)
 }
 
-const evaluate = (node: any) => {
+type Identifier = {
+    type: typeof IDENTIFIER
+    name: StandardLibrary
+}
+
+const evaluate = (node: CallExpression | Identifier | Token) => {
     if (node.type === CALL_EXPRESSION) return apply(node)
     if (node.type === IDENTIFIER) return getIdentifier(node)
     if (typeof node.value !== 'undefined') return node.value

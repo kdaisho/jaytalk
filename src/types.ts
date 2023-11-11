@@ -33,3 +33,46 @@ export type StringLiteral = {
     type: typeof STRING_LITERAL
     value: string
 }
+
+export type Visitor = {
+    [key: string]: {
+        enter?: ({
+            node,
+            parent,
+        }: {
+            node: Record<string, unknown>
+            parent?: Record<string, unknown>
+        }) => void
+        exit?: ({
+            node,
+            parent,
+        }: {
+            node: Record<string, unknown>
+            parent?: Record<string, unknown>
+        }) => void
+    }
+}
+
+export type CallExpressionVisitor = {
+    CallExpression: {
+        enter: ({
+            node,
+            parent,
+        }: {
+            node: CallExpression
+            parent?: Record<string, unknown>
+        }) => void
+    }
+}
+
+export type NumericLiteralVisitor = {
+    NumericLiteral: {
+        exit: ({
+            node,
+            parent,
+        }: {
+            node: CallExpression
+            parent?: Record<string, unknown>
+        }) => void
+    }
+}

@@ -1,5 +1,6 @@
 import evaluate from '../src/evaluate'
 import { NUMERIC_LITERAL, STRING_LITERAL } from '../src/parse'
+import { CallExpression } from '../src/types'
 
 describe('evaluate', () => {
     it('should fall back to returning a primitive numeric value', () => {
@@ -13,7 +14,7 @@ describe('evaluate', () => {
     })
 
     it('should be able to evaluate a single expression', () => {
-        const ast = {
+        const ast: CallExpression = {
             type: 'CallExpression',
             name: 'add',
             arguments: [

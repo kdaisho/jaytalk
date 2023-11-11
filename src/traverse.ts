@@ -1,3 +1,5 @@
+import { CallExpressionVisitor, NumericLiteralVisitor } from './types'
+
 function traverseArray({
     array,
     parent,
@@ -5,23 +7,38 @@ function traverseArray({
 }: {
     array: Record<string, any>
     parent?: Record<string, any>
-    visitor: VisitorPattern
+    visitor: CallExpressionVisitor | NumericLiteralVisitor
 }) {
     array.forEach((node: Record<string, any>) => {
         traverseNode({ node, parent, visitor })
     })
 }
 
-function traverseNode<T>({
+function traverseNode({
     node,
     parent,
     visitor,
 }: {
     node: Record<string, any>
     parent?: Record<string, any>
-    visitor: VisitorPattern
+    visitor: CallExpressionVisitor | NumericLiteralVisitor
 }) {
-    const methods = visitor[node.type]
+    const methods = visitor[node.type as keyof typeof visitor] as {
+        enter?: ({
+            node,
+            parent,
+        }: {
+            node: Record<string, unknown>
+            parent?: Record<string, unknown>
+        }) => void
+        exit?: ({
+            node,
+            parent,
+        }: {
+            node: Record<string, unknown>
+            parent?: Record<string, unknown>
+        }) => void
+    }
 
     if (methods && methods.enter) {
         methods.enter({ node, parent })
@@ -38,26 +55,7 @@ function traverseNode<T>({
 
 export default (
     node: { type: string; arguments?: Record<string, any>[] },
-    visitor: VisitorPattern
+    visitor: CallExpressionVisitor | NumericLiteralVisitor
 ) => {
     traverseNode({ node, visitor })
-}
-
-type VisitorPattern = {
-    [key: string]: {
-        enter?: ({
-            node,
-            parent,
-        }: {
-            node: Record<string, any>
-            parent?: Record<string, any>
-        }) => void
-        exit?: ({
-            node,
-            parent,
-        }: {
-            node: Record<string, any>
-            parent?: Record<string, any>
-        }) => void
-    }
 }
