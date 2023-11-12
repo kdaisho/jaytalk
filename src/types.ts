@@ -51,7 +51,17 @@ export type NodeVisitor = {
     }
 }
 
-export type Visitor = CallExpressionVisitor | NodeVisitor
+export type BabelVisitor = {
+    CallExpression: {
+        enter: ({
+            node,
+        }: {
+            node: { name: StandardLibrary; callee: Identifier }
+        }) => void
+    }
+}
+
+export type Visitor = CallExpressionVisitor | NodeVisitor | BabelVisitor
 
 export type NumericLiteral = {
     type: typeof NUMERIC_LITERAL
