@@ -25,10 +25,18 @@ export type StandardLibrary =
     | 'max'
     | 'min'
 
-export type CallExpression<T = unknown> = {
+// export interface CallExpression<
+//     T extends CallExpression | NumericLiteral | StringLiteral = NumericLiteral
+// > {
+//     type: typeof CALL_EXPRESSION
+//     name: StandardLibrary
+//     arguments: T[]
+// }
+
+export interface CallExpression {
     type: typeof CALL_EXPRESSION
     name: StandardLibrary
-    arguments: T[]
+    arguments: CallExpression
 }
 
 export type NumericLiteral = {
@@ -52,11 +60,11 @@ export type VisitorMethod = ({
 }: {
     node: {
         type: string
-        arguments?: (CallExpression | NumericLiteral)[]
+        arguments?: NumericLiteral[]
     }
     parent?: {
         type: string
-        arguments?: (CallExpression | NumericLiteral)[]
+        arguments?: NumericLiteral[]
     }
 }) => void
 
@@ -85,3 +93,9 @@ export type NumericLiteralVisitor = {
 }
 
 export type Visitor = CallExpressionVisitor | NumericLiteralVisitor
+
+export type AST = {
+    type: typeof CALL_EXPRESSION
+    name: StandardLibrary
+    arguments: NumericLiteral[]
+}

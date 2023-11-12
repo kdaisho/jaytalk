@@ -1,10 +1,10 @@
 import { CALL_EXPRESSION, NUMERIC_LITERAL } from '../src/parse'
 import traverse from '../src/traverse'
-import { CallExpression, NumericLiteral, Visitor } from '../src/types'
+import { AST, NumericLiteral, Visitor } from '../src/types'
 
 describe('traverse', () => {
     it('should travel to all the nodes in the tree and reverse the math', () => {
-        const ast: CallExpression<NumericLiteral> = {
+        const ast: AST = {
             type: CALL_EXPRESSION,
             name: 'add',
             arguments: [
@@ -35,7 +35,7 @@ describe('traverse', () => {
     })
 
     it('should travel to all the nodes in the tree and double all of the numbers', () => {
-        const ast: CallExpression<NumericLiteral> = {
+        const ast: AST = {
             type: 'CallExpression',
             name: 'add',
             arguments: [

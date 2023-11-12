@@ -1,13 +1,12 @@
-import { CallExpression, NumericLiteral, Visitor, VisitorMethod } from './types'
+import { AST, NumericLiteral, Visitor, VisitorMethod } from './types'
 
-function traverseArray<T>({
+function traverseArray({
     array,
     parent,
     visitor,
 }: {
-    // array: CallExpression<CallExpression | NumericLiteral>[]
-    array: T[]
-    parent?: CallExpression<CallExpression | NumericLiteral>
+    array: AST[] | NumericLiteral[]
+    parent?: AST
     visitor: Visitor
 }) {
     array.forEach(node => {
@@ -20,8 +19,8 @@ function traverseNode({
     parent,
     visitor,
 }: {
-    node: CallExpression<CallExpression | NumericLiteral>
-    parent?: CallExpression<CallExpression | NumericLiteral>
+    node: AST | NumericLiteral
+    parent?: AST
     visitor: Visitor
 }) {
     const methods = visitor[node.type as keyof typeof visitor] as {
@@ -33,10 +32,10 @@ function traverseNode({
         methods.enter({ node, parent })
     }
 
-    if (node.arguments) {
-        traverseArray<CallExpression<CallExpression | NumericLiteral>>({
+    if ('arguments' in node && node.arguments) {
+        traverseArray({
             array: node.arguments,
-            parent: node,
+            parent: node as AST,
             visitor,
         })
     }
@@ -46,6 +45,6 @@ function traverseNode({
     }
 }
 
-export default (node: CallExpression<NumericLiteral>, visitor: Visitor) => {
+export default (node: AST, visitor: Visitor) => {
     traverseNode({ node, visitor })
 }
