@@ -31,7 +31,7 @@ describe('traverse', () => {
         traverse(ast, visitor)
 
         expect(ast.name).toBe('subtract')
-        expect(ast.arguments[0].value).toBe(24)
+        expect((ast.arguments[0] as NumericLiteral).value).toBe(24)
     })
 
     it('should travel to all the nodes in the tree and double all of the numbers', () => {
@@ -54,7 +54,7 @@ describe('traverse', () => {
 
         traverse(ast, visitor)
 
-        expect(ast.arguments[0].value).toBe(24)
-        expect(ast.arguments[1].value).toBe(12)
+        expect((ast.arguments[0] as NumericLiteral).value).toBe(24)
+        expect((ast.arguments[1] as NumericLiteral).value).toBe(12)
     })
 })

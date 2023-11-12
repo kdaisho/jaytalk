@@ -46,7 +46,7 @@ export type CallExpressionVisitor = {
 
 export type NodeVisitor = {
     NumericLiteral: {
-        exit: ({ node, parent }: { node: Node; parent?: AST }) => void
+        exit: ({ node }: { node: NumericLiteral }) => void
     }
 }
 
