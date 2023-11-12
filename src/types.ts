@@ -22,8 +22,10 @@ export type StandardLibrary =
     | 'modulo'
     | 'log'
     | 'pi'
+    | 'max'
+    | 'min'
 
-export type CallExpression<T = NumericLiteral> = {
+export type CallExpression<T = unknown> = {
     type: typeof CALL_EXPRESSION
     name: StandardLibrary
     arguments: T[]
@@ -44,24 +46,19 @@ export type Identifier = {
     name: StandardLibrary
 }
 
-export type Visitor = {
-    [key: string]: {
-        enter?: ({
-            node,
-            parent,
-        }: {
-            node: Record<string, unknown>
-            parent?: Record<string, unknown>
-        }) => void
-        exit?: ({
-            node,
-            parent,
-        }: {
-            node: Record<string, unknown>
-            parent?: Record<string, unknown>
-        }) => void
+export type VisitorMethod = ({
+    node,
+    parent,
+}: {
+    node: {
+        type: string
+        arguments?: (CallExpression | NumericLiteral)[]
     }
-}
+    parent?: {
+        type: string
+        arguments?: (CallExpression | NumericLiteral)[]
+    }
+}) => void
 
 export type CallExpressionVisitor = {
     CallExpression: {
@@ -86,3 +83,5 @@ export type NumericLiteralVisitor = {
         }) => void
     }
 }
+
+export type Visitor = CallExpressionVisitor | NumericLiteralVisitor

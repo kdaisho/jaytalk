@@ -10,7 +10,7 @@ import {
 
 // const last = (collection: any[]) => collection.at(-1)
 
-const apply = (node: CallExpression): number | void => {
+const apply = (node: CallExpression<NumericLiteral>): number | void => {
     const fn = Moth[node.name]
     const args = node.arguments.map(evaluate) as number[]
 
@@ -35,7 +35,12 @@ type Identifier = {
 }
 
 const evaluate = (
-    node: CallExpression | Identifier | NumericLiteral | StringLiteral | Token
+    node:
+        | CallExpression<NumericLiteral>
+        | Identifier
+        | NumericLiteral
+        | StringLiteral
+        | Token
 ) => {
     if (node.type === CALL_EXPRESSION) return apply(node)
     if (node.type === IDENTIFIER) return getIdentifier(node)

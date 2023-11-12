@@ -1,11 +1,6 @@
 import { CALL_EXPRESSION, NUMERIC_LITERAL } from '../src/parse'
 import traverse from '../src/traverse'
-import {
-    CallExpression,
-    NumericLiteral,
-    CallExpressionVisitor,
-    NumericLiteralVisitor,
-} from '../src/types'
+import { CallExpression, NumericLiteral, Visitor } from '../src/types'
 
 describe('traverse', () => {
     it('should travel to all the nodes in the tree and reverse the math', () => {
@@ -18,7 +13,7 @@ describe('traverse', () => {
             ],
         }
 
-        const visitor: CallExpressionVisitor & NumericLiteralVisitor = {
+        const visitor: Visitor = {
             CallExpression: {
                 enter({ node }) {
                     if (node.name === 'add') {

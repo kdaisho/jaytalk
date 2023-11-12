@@ -1,27 +1,18 @@
-import {
-    CallExpression,
-    CallExpressionVisitor,
-    NumericLiteral,
-    NumericLiteralVisitor,
-} from './types'
+import { CallExpression, NumericLiteral, Visitor, VisitorMethod } from './types'
 
-function traverseArray({
+function traverseArray<T>({
     array,
     parent,
     visitor,
 }: {
-    array: (CallExpression | NumericLiteral)[]
-    parent?: { type: string; arguments?: (CallExpression | NumericLiteral)[] }
-    visitor: CallExpressionVisitor | NumericLiteralVisitor
+    // array: CallExpression<CallExpression | NumericLiteral>[]
+    array: T[]
+    parent?: CallExpression<CallExpression | NumericLiteral>
+    visitor: Visitor
 }) {
-    array.forEach(
-        (node: {
-            type: string
-            arguments?: (CallExpression | NumericLiteral)[]
-        }) => {
-            traverseNode({ node, parent, visitor })
-        }
-    )
+    array.forEach(node => {
+        traverseNode({ node, parent, visitor })
+    })
 }
 
 function traverseNode({
@@ -29,37 +20,13 @@ function traverseNode({
     parent,
     visitor,
 }: {
-    node: { type: string; arguments?: (CallExpression | NumericLiteral)[] }
-    parent?: { type: string; arguments?: (CallExpression | NumericLiteral)[] }
-    visitor: CallExpressionVisitor | NumericLiteralVisitor
+    node: CallExpression<CallExpression | NumericLiteral>
+    parent?: CallExpression<CallExpression | NumericLiteral>
+    visitor: Visitor
 }) {
     const methods = visitor[node.type as keyof typeof visitor] as {
-        enter?: ({
-            node,
-            parent,
-        }: {
-            node: {
-                type: string
-                arguments?: (CallExpression | NumericLiteral)[]
-            }
-            parent?: {
-                type: string
-                arguments?: (CallExpression | NumericLiteral)[]
-            }
-        }) => void
-        exit?: ({
-            node,
-            parent,
-        }: {
-            node: {
-                type: string
-                arguments?: (CallExpression | NumericLiteral)[]
-            }
-            parent?: {
-                type: string
-                arguments?: (CallExpression | NumericLiteral)[]
-            }
-        }) => void
+        enter?: VisitorMethod
+        exit?: VisitorMethod
     }
 
     if (methods && methods.enter) {
@@ -67,7 +34,11 @@ function traverseNode({
     }
 
     if (node.arguments) {
-        traverseArray({ array: node.arguments, parent: node, visitor })
+        traverseArray<CallExpression<CallExpression | NumericLiteral>>({
+            array: node.arguments,
+            parent: node,
+            visitor,
+        })
     }
 
     if (methods && methods.exit) {
@@ -75,9 +46,6 @@ function traverseNode({
     }
 }
 
-export default (
-    node: { type: string; arguments?: (CallExpression | NumericLiteral)[] },
-    visitor: CallExpressionVisitor | NumericLiteralVisitor
-) => {
+export default (node: CallExpression<NumericLiteral>, visitor: Visitor) => {
     traverseNode({ node, visitor })
 }
