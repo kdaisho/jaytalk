@@ -1,6 +1,6 @@
 import { CALL_EXPRESSION, NUMERIC_LITERAL } from '../src/parse'
 import traverse from '../src/traverse'
-import { AST, NumericLiteral, Visitor } from '../src/types'
+import { AST, CallExpression, NumericLiteral, Visitor } from '../src/types'
 
 describe('traverse', () => {
     it('should travel to all the nodes in the tree and reverse the math', () => {
@@ -56,5 +56,30 @@ describe('traverse', () => {
 
         expect((ast.arguments[0] as NumericLiteral).value).toBe(24)
         expect((ast.arguments[1] as NumericLiteral).value).toBe(12)
+    })
+
+    it('should modify the tree', () => {
+        const ast: AST = {
+            type: 'CallExpression',
+            name: '+',
+            arguments: [
+                { type: 'NumericLiteral', value: 12 },
+                { type: 'NumericLiteral', value: 6 },
+            ],
+        }
+
+        const visitor = {
+            CallExpression: {
+                enter({ node }: { node: CallExpression }) {
+                    if (node.name === '+') {
+                        node.name = 'add'
+                    }
+                },
+            },
+        }
+
+        traverse(ast, visitor)
+
+        expect(ast.name).toBe('add')
     })
 })

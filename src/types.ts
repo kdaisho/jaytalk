@@ -20,6 +20,7 @@ export type StandardLibrary =
     | 'pi'
     | 'max'
     | 'min'
+    | '+'
 
 export type VisitorMethod = ({
     node,
