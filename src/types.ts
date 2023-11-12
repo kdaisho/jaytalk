@@ -2,9 +2,10 @@ import { IDENTIFIER, NUMERIC_LITERAL, STRING_LITERAL } from './parse'
 import { NUMBER, PARENTHESIS, STRING, NAME } from './tokenize'
 
 export type NumericToken = { type: typeof NUMBER; value: number }
+
 export type StringToken = {
     type: typeof PARENTHESIS | typeof STRING | typeof NAME
-    value: string
+    value: string | StandardLibrary
 }
 
 export type Token = NumericToken | StringToken
@@ -38,20 +39,14 @@ export type CallExpressionVisitor = {
             parent,
         }: {
             node: CallExpression
-            parent?: Record<string, unknown>
+            parent?: AST
         }) => void
     }
 }
 
 export type NodeVisitor = {
     NumericLiteral: {
-        exit: ({
-            node,
-            parent,
-        }: {
-            node: Node
-            parent?: Record<string, unknown>
-        }) => void
+        exit: ({ node, parent }: { node: Node; parent?: AST }) => void
     }
 }
 

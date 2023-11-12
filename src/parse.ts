@@ -1,6 +1,6 @@
 import { isOpeningParenthesis, isClosingParenthesis } from './identify'
 import { NAME, NUMBER, STRING } from './tokenize'
-import { Token } from './types'
+import { CallExpression, Node, StandardLibrary, Token } from './types'
 import { peek, pop } from './utils'
 
 export const NUMERIC_LITERAL = 'NumericLiteral'
@@ -25,7 +25,7 @@ const parenthesize = (tokens: Token[]): unknown => {
     return token
 }
 
-const parse = (tokenOrTokens: unknown): Record<string, unknown> => {
+const parse = (tokenOrTokens: unknown): Node | CallExpression => {
     if (Array.isArray(tokenOrTokens) && tokenOrTokens.length) {
         const [first, ...rest] = tokenOrTokens
 
@@ -55,7 +55,7 @@ const parse = (tokenOrTokens: unknown): Record<string, unknown> => {
     if (token.type === NAME) {
         return {
             type: IDENTIFIER,
-            name: token.value,
+            name: token.value as StandardLibrary,
         }
     }
 
