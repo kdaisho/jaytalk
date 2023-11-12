@@ -1,9 +1,4 @@
-import {
-    CALL_EXPRESSION,
-    IDENTIFIER,
-    NUMERIC_LITERAL,
-    STRING_LITERAL,
-} from './parse'
+import { IDENTIFIER, NUMERIC_LITERAL, STRING_LITERAL } from './parse'
 import { NUMBER, PARENTHESIS, STRING, NAME } from './tokenize'
 
 export type NumericToken = { type: typeof NUMBER; value: number }
@@ -25,19 +20,42 @@ export type StandardLibrary =
     | 'max'
     | 'min'
 
-// export interface CallExpression<
-//     T extends CallExpression | NumericLiteral | StringLiteral = NumericLiteral
-// > {
-//     type: typeof CALL_EXPRESSION
-//     name: StandardLibrary
-//     arguments: T[]
-// }
+export type VisitorMethod = ({
+    node,
+    parent,
+}: {
+    node: {
+        type: string
+        arguments?: (Node | CallExpression)[]
+    }
+    parent?: AST
+}) => void
 
-export interface CallExpression {
-    type: typeof CALL_EXPRESSION
-    name: StandardLibrary
-    arguments: CallExpression
+export type CallExpressionVisitor = {
+    CallExpression: {
+        enter: ({
+            node,
+            parent,
+        }: {
+            node: CallExpression
+            parent?: Record<string, unknown>
+        }) => void
+    }
 }
+
+export type NodeVisitor = {
+    NumericLiteral: {
+        exit: ({
+            node,
+            parent,
+        }: {
+            node: Node
+            parent?: Record<string, unknown>
+        }) => void
+    }
+}
+
+export type Visitor = CallExpressionVisitor | NodeVisitor
 
 export type NumericLiteral = {
     type: typeof NUMERIC_LITERAL
@@ -54,48 +72,12 @@ export type Identifier = {
     name: StandardLibrary
 }
 
-export type VisitorMethod = ({
-    node,
-    parent,
-}: {
-    node: {
-        type: string
-        arguments?: NumericLiteral[]
-    }
-    parent?: {
-        type: string
-        arguments?: NumericLiteral[]
-    }
-}) => void
+export type Node = NumericLiteral | StringLiteral | Identifier
 
-export type CallExpressionVisitor = {
-    CallExpression: {
-        enter: ({
-            node,
-            parent,
-        }: {
-            node: CallExpression
-            parent?: Record<string, unknown>
-        }) => void
-    }
-}
-
-export type NumericLiteralVisitor = {
-    NumericLiteral: {
-        exit: ({
-            node,
-            parent,
-        }: {
-            node: NumericLiteral
-            parent?: Record<string, unknown>
-        }) => void
-    }
-}
-
-export type Visitor = CallExpressionVisitor | NumericLiteralVisitor
-
-export type AST = {
-    type: typeof CALL_EXPRESSION
+export type CallExpression = {
+    type: 'CallExpression'
     name: StandardLibrary
-    arguments: NumericLiteral[]
+    arguments: (Node | CallExpression)[]
 }
+
+export type AST = Node | Node[] | CallExpression

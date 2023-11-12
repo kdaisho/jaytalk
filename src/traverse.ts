@@ -1,11 +1,11 @@
-import { AST, NumericLiteral, Visitor, VisitorMethod } from './types'
+import { AST, Visitor, VisitorMethod } from './types'
 
 function traverseArray({
     array,
     parent,
     visitor,
 }: {
-    array: AST[] | NumericLiteral[]
+    array: AST[]
     parent?: AST
     visitor: Visitor
 }) {
@@ -19,10 +19,12 @@ function traverseNode({
     parent,
     visitor,
 }: {
-    node: AST | NumericLiteral
+    node: AST
     parent?: AST
     visitor: Visitor
 }) {
+    if (!('type' in node)) return
+
     const methods = visitor[node.type as keyof typeof visitor] as {
         enter?: VisitorMethod
         exit?: VisitorMethod
@@ -35,7 +37,7 @@ function traverseNode({
     if ('arguments' in node && node.arguments) {
         traverseArray({
             array: node.arguments,
-            parent: node as AST,
+            parent: node,
             visitor,
         })
     }

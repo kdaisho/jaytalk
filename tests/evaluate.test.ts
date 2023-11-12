@@ -1,11 +1,6 @@
 import evaluate from '../src/evaluate'
 import { NUMERIC_LITERAL, STRING_LITERAL } from '../src/parse'
-import {
-    CallExpression,
-    Identifier,
-    NumericLiteral,
-    StringLiteral,
-} from '../src/types'
+import { Identifier, AST, NumericLiteral, StringLiteral } from '../src/types'
 
 describe('evaluate', () => {
     it('should fall back to returning a primitive numeric value', () => {
@@ -19,7 +14,7 @@ describe('evaluate', () => {
     })
 
     it('should be able to evaluate a single expression', () => {
-        const ast: CallExpression = {
+        const ast: AST = {
             type: 'CallExpression',
             name: 'add',
             arguments: [
@@ -33,7 +28,7 @@ describe('evaluate', () => {
     })
 
     it('should be able to evaluate a nested expression', () => {
-        const ast: CallExpression = {
+        const ast: AST = {
             type: 'CallExpression',
             name: 'add',
             arguments: [
@@ -60,7 +55,7 @@ describe('evaluate', () => {
     })
 
     it('should be able to determine the highest number in a range', () => {
-        const ast: CallExpression = {
+        const ast: AST = {
             type: 'CallExpression',
             name: 'max',
             arguments: [
@@ -74,7 +69,7 @@ describe('evaluate', () => {
     })
 
     it('should be able to determine the lowest number in a range', () => {
-        const ast: CallExpression = {
+        const ast: AST = {
             type: 'CallExpression',
             name: 'min',
             arguments: [
