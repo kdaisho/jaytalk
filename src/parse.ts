@@ -7,6 +7,7 @@ export const NUMERIC_LITERAL = 'NumericLiteral'
 export const STRING_LITERAL = 'StringLiteral'
 export const IDENTIFIER = 'Identifier'
 export const CALL_EXPRESSION = 'CallExpression'
+export const VARIABLE_DECLARATION = 'VariableDeclaration'
 
 const parenthesize = (tokens: Token[]): unknown => {
     const token = pop(tokens)

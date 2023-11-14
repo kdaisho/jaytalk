@@ -1,5 +1,5 @@
 import toJavaScript from '../src/to-javascript'
-import { AST } from '../src/types'
+import { AST, VariableDeclaration } from '../src/types'
 
 describe('toJavaScript', () => {
     it('should reformat Moth to valid JavaScript', () => {
@@ -21,5 +21,15 @@ describe('toJavaScript', () => {
         }
 
         expect(toJavaScript(ast)).toBe('add(2, 3, subtract(5, 4))')
+    })
+
+    it('should support variables', () => {
+        const ast: VariableDeclaration = {
+            type: 'VariableDeclaration',
+            identifier: { type: 'Identifier', name: 'x' },
+            assignment: { type: 'NumericLiteral', value: 2 },
+        }
+
+        expect(toJavaScript(ast)).toBe('let x = 2;')
     })
 })

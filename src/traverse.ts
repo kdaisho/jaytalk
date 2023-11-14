@@ -1,4 +1,4 @@
-import { AST, Visitor, VisitorMethod } from './types'
+import { AST, VariableDeclaration, Visitor, VisitorMethod } from './types'
 
 function traverseArray({
     array,
@@ -19,7 +19,7 @@ function traverseNode({
     parent,
     visitor,
 }: {
-    node: AST
+    node: AST | VariableDeclaration
     parent?: AST
     visitor: Visitor
 }) {
@@ -47,6 +47,6 @@ function traverseNode({
     }
 }
 
-export default (node: AST, visitor: Visitor) => {
+export default (node: AST | VariableDeclaration, visitor: Visitor) => {
     traverseNode({ node, visitor })
 }
