@@ -4,6 +4,7 @@ import {
     isNumber,
     isParenthesis,
     isQuote,
+    isPound,
 } from './identify'
 import { Token } from './types'
 
@@ -11,6 +12,7 @@ export const NUMBER = 'Number'
 export const PARENTHESIS = 'Parenthesis'
 export const STRING = 'String'
 export const NAME = 'Name'
+export const HEADING = 'Heading'
 
 export const tokenize = (input: string) => {
     const tokens: Token[] = []
@@ -76,6 +78,20 @@ export const tokenize = (input: string) => {
             /* now, input[cursor] is the closing quote,
             so bump the cursor to the next character */
             cursor++
+            continue
+        }
+
+        if (isPound(char)) {
+            let symbol = char
+
+            while (isPound(input[++cursor])) {
+                symbol += input[cursor]
+            }
+
+            tokens.push({
+                type: HEADING,
+                value: symbol,
+            })
             continue
         }
 

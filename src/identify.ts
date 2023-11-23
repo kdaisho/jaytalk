@@ -25,3 +25,5 @@ export const isParenthesis = (char: string) =>
     isOpeningParenthesis(char) || isClosingParenthesis(char)
 
 export const isQuote = (char: string) => char === '"'
+
+export const isPound = (char: string) => char === '#'

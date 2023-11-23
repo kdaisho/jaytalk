@@ -1,10 +1,10 @@
 import { IDENTIFIER, NUMERIC_LITERAL, STRING_LITERAL } from './parse'
-import { NUMBER, PARENTHESIS, STRING, NAME } from './tokenize'
+import { NUMBER, PARENTHESIS, STRING, NAME, HEADING } from './tokenize'
 
 export type NumericToken = { type: typeof NUMBER; value: number }
 
 export type StringToken = {
-    type: typeof PARENTHESIS | typeof STRING | typeof NAME
+    type: typeof PARENTHESIS | typeof STRING | typeof NAME | typeof HEADING
     value: string | StandardLibrary
 }
 
