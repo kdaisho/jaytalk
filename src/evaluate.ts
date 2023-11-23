@@ -7,7 +7,7 @@ const apply = (node: CallExpression): number | void => {
     const args = node.arguments.map(evaluate) as number[]
 
     if (typeof fn !== 'function') {
-        throw new TypeError(`🔥${node.name} is not a function🔥`)
+        throw new TypeError(`${node.name} is not a function 🔥`)
     }
 
     return fn(...args)
@@ -15,7 +15,7 @@ const apply = (node: CallExpression): number | void => {
 
 const getIdentifier = (node: { type: typeof IDENTIFIER; name: string }) => {
     if (Moth[node.name]) return Moth[node.name]
-    throw new ReferenceError(`🔥${node.name} is not defined🔥`)
+    throw new ReferenceError(`${node.name} is not defined 🔥`)
 }
 
 const define = (node: VariableDeclaration) => {

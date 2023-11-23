@@ -60,7 +60,7 @@ const parse = (tokenOrTokens: unknown): Node | CallExpression => {
         }
     }
 
-    throw new Error(`🔥${token} is not defined🔥`)
+    throw new Error(`${token} is not defined 🔥`)
 }
 
 export default function (tokens: Token[]) {

@@ -18,7 +18,7 @@ async function askQuestions() {
 
 if (process.argv[1] === import.meta.path) {
     console.log(
-        chalk.greenBright('🔥 Welcome to the Moth programming language! 🔥')
+        chalk.greenBright('🪰 Welcome to the Moth programming language! 🪰')
     )
     repl()
 }
@@ -31,7 +31,7 @@ async function repl() {
             console.log(chalk.yellow(parseAndEvaluate(COMMAND)))
         }
     } catch (err) {
-        console.error(`🔥${err}🔥`)
+        console.error(`${err} 👿`)
     }
     repl()
 }

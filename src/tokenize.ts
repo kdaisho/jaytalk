@@ -79,7 +79,7 @@ export const tokenize = (input: string) => {
             continue
         }
 
-        throw new Error(`🔥${char} is not valid🔥`)
+        throw new Error(`${char} is not valid 🔥`)
     }
 
     return tokens
