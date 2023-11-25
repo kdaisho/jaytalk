@@ -1,5 +1,5 @@
 import { isOpeningParenthesis, isClosingParenthesis } from './identify'
-import { NAME, NUMBER, STRING } from './tokenize'
+import { HEADING, NAME, NUMBER, STRING, HTML } from './tokenize'
 import { CallExpression, Node, StandardLibrary, Token } from './types'
 import { peek, pop } from './utils'
 
@@ -10,6 +10,7 @@ export const CALL_EXPRESSION = 'CallExpression'
 export const VARIABLE_DECLARATION = 'VariableDeclaration'
 
 const parenthesize = (tokens: Token[]): unknown => {
+    console.log('==>', tokens)
     const token = pop(tokens)
 
     if (token && isOpeningParenthesis(token.value)) {
@@ -27,14 +28,31 @@ const parenthesize = (tokens: Token[]): unknown => {
 }
 
 const parse = (tokenOrTokens: unknown): Node | CallExpression => {
+    console.log('==> P', tokenOrTokens)
     if (Array.isArray(tokenOrTokens) && tokenOrTokens.length) {
         const [first, ...rest] = tokenOrTokens
 
-        return {
+        if (first.type === HEADING) {
+            console.log('==> PP 1', first, rest)
+            console.log('==> PP 2', rest)
+            const yo = {
+                type: HTML,
+                value: first.value,
+                assignment: rest[0],
+            }
+            console.log('==> PPP', yo)
+            return yo
+        }
+
+        let yo = {
             type: CALL_EXPRESSION,
             name: first.value,
             arguments: rest.map(parse),
         }
+
+        console.log('==> CE', yo)
+
+        return yo
     }
 
     const token = tokenOrTokens as Token
@@ -60,7 +78,14 @@ const parse = (tokenOrTokens: unknown): Node | CallExpression => {
         }
     }
 
-    throw new Error(`${token} is not defined 🔥`)
+    if (token.type === HEADING) {
+        return {
+            type: HTML,
+            value: token.value,
+        }
+    }
+
+    throw new Error(`parser: ${token} is not defined 🔥`)
 }
 
 export default function (tokens: Token[]) {

@@ -4,6 +4,12 @@
 
 A sleek and engaging language that transpiles to JavaScript, crafted with TypeScript atop Bun.js.
 
+## Run Moth
+
+```
+moth run ./examples/md.moth
+```
+
 ## The stages of a compiler
 
 -   Parsing: Take the source code and turn it into a representation of that

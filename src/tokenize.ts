@@ -13,6 +13,7 @@ export const PARENTHESIS = 'Parenthesis'
 export const STRING = 'String'
 export const NAME = 'Name'
 export const HEADING = 'Heading'
+export const HTML = 'HTML'
 
 export const tokenize = (input: string) => {
     const tokens: Token[] = []
@@ -92,6 +93,8 @@ export const tokenize = (input: string) => {
                 type: HEADING,
                 value: symbol,
             })
+
+            cursor++
             continue
         }
 

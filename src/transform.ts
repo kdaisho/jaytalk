@@ -7,7 +7,7 @@ import {
 } from './types'
 
 const specialForms: { [k: string]: (_: CallExpression) => void } = {
-    define(node: Record<string, unknown>) {
+    'define'(node: Record<string, unknown>) {
         const [identifier, assignment] = node.arguments as [
             Identifier,
             NumericLiteral | StringLiteral
@@ -18,9 +18,18 @@ const specialForms: { [k: string]: (_: CallExpression) => void } = {
         delete node.name
         delete node.arguments
     },
+    '#': (node: Record<string, unknown>) => {
+        console.log('==> TR', node)
+        const assignment = (node.arguments as unknown[])[0]
+        node.assignment = assignment
+        delete node.name
+        delete node.arguments
+        console.log('==> TR 2', node)
+    },
 }
 
-export default function transform(node: CallExpression) {
+export default function (node: CallExpression) {
+    console.log('==> HERE?', node)
     traverse(node, {
         CallExpression: {
             enter({
@@ -31,10 +40,14 @@ export default function transform(node: CallExpression) {
                 if (specialForms[node.name]) {
                     specialForms[node.name](node as CallExpression)
                 }
-                node.callee = { type: 'Identifier', name: node.name }
+
+                node.callee = { type: 'Identifier', name: node.name } // name is undefined
+                console.log('==> TR 3', node)
             },
         },
     })
+
+    console.log('==> TTT', node)
 
     return node
 }

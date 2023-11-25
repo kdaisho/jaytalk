@@ -1,3 +1,4 @@
+import { HTML } from './tokenize'
 import { AST, VariableDeclaration, Visitor, VisitorMethod } from './types'
 
 function traverseArray({
@@ -23,7 +24,7 @@ function traverseNode({
     parent?: AST
     visitor: Visitor
 }) {
-    if (!('type' in node)) return
+    if (!('type' in node) || node.type === HTML) return
 
     const methods = visitor[node.type as keyof typeof visitor] as {
         enter?: VisitorMethod
@@ -47,6 +48,6 @@ function traverseNode({
     }
 }
 
-export default (node: AST | VariableDeclaration, visitor: Visitor) => {
+export default function (node: AST | VariableDeclaration, visitor: Visitor) {
     traverseNode({ node, visitor })
 }

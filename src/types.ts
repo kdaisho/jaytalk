@@ -1,5 +1,5 @@
 import { IDENTIFIER, NUMERIC_LITERAL, STRING_LITERAL } from './parse'
-import { NUMBER, PARENTHESIS, STRING, NAME, HEADING } from './tokenize'
+import { NUMBER, PARENTHESIS, STRING, NAME, HEADING, HTML } from './tokenize'
 
 export type NumericToken = { type: typeof NUMBER; value: number }
 
@@ -92,7 +92,21 @@ export type Identifier = {
     name: string
 }
 
-export type Node = NumericLiteral | StringLiteral | Identifier
+export type HTML = {
+    type: typeof HTML
+    value: string
+}
+
+export type HTMLNode = {
+    type: typeof HTML
+    value: string
+    assignment: {
+        type: 'String'
+        value: string
+    }
+}
+
+export type Node = NumericLiteral | StringLiteral | Identifier | HTML
 
 export type CallExpression = {
     type: 'CallExpression'
