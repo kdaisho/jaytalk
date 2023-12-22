@@ -4,6 +4,8 @@ import { parseAndEvaluate } from './parse-and-evaluate'
 
 const COMMAND = 'COMMAND'
 
+console.log(chalk.greenBright('Welcome to the Moth programming language! 🪰'))
+
 async function askQuestions() {
     const questions = [
         {

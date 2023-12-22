@@ -23,5 +23,5 @@ export default {
     max,
     min,
     log: console.log,
-    pi: Math.PI,
+    pi: () => Math.PI,
 } as { [key: string]: unknown }

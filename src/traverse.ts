@@ -31,7 +31,7 @@ function traverseNode({
     }
 
     if (methods && methods.enter) {
-        methods.enter({ node, parent })
+        methods.enter({ node })
     }
 
     if ('arguments' in node && node.arguments) {
