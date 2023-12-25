@@ -51,7 +51,7 @@ describe('evaluate', () => {
 
     it('should be able to lookup identifiers in the environment', () => {
         const ast: Identifier = { type: 'Identifier', name: 'pi' }
-        expect(evaluate(ast)).toBe(Math.PI)
+        expect((evaluate(ast) as () => number)()).toBe(Math.PI)
     })
 
     it('should be able to determine the highest number in a range', () => {
