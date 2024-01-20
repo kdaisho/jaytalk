@@ -6,6 +6,8 @@
     },
     "scripts": {
         "lint": "eslint .",
+        "build": "bun build ./src/moth.ts --compile --outfile ./bin/moth",
+        "test": "bun test",
         "out": "bun build ./src/moth.ts --compile --outfile ./bin/moth && sudo cp ./bin/moth /usr/local/bin/"
     },
     "dependencies": {
